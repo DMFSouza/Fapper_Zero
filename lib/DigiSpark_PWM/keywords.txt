@@ -1,0 +1,23 @@
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DigiSpark_PWM	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+setDutyCycle	KEYWORD2
+setFrequency	KEYWORD2
+getPin KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+ERROR_OK LITERAL1
+ERROR_NOT_INITIALIZED LITERAL1
+ERROR_INVALID_PIN LITERAL1
+

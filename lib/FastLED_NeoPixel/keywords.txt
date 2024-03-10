@@ -1,0 +1,62 @@
+#######################################
+# Syntax Coloring Map For FastLED NeoPixel Library
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+# Library
+FastLED_NeoPixel	KEYWORD1
+
+# Classes
+FastLED_NeoPixel	KEYWORD1
+FastLED_NeoPixel_Variant	KEYWORD1
+
+#######################################
+# Adafruit_NeoPixel Methods and Functions (KEYWORD2)
+#######################################
+
+# These are covered by the Adafruit NeoPixel keywords file.
+# They are included here for completeness, but are commented out.
+
+# begin	KEYWORD2
+# show	KEYWORD2
+# setPin	KEYWORD2
+# setPixelColor	KEYWORD2
+# fill	KEYWORD2
+# setBrightness	KEYWORD2
+# clear	KEYWORD2
+# updateLength	KEYWORD2
+# updateType	KEYWORD2
+# canShow	KEYWORD2
+# getPixels	KEYWORD2
+# getBrightness	KEYWORD2
+# getPin	KEYWORD2
+# numPixels	KEYWORD2
+# getPixelColor	KEYWORD2
+# sine8	KEYWORD2
+# gamma8	KEYWORD2
+# Color	KEYWORD2
+# ColorHSV	KEYWORD2
+# gamma32	KEYWORD2
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+# These functions are unique to the FastLED_NeoPixel implementation.
+
+NeoToEOrder	KEYWORD2
+
+getLeds	KEYWORD2
+getController	KEYWORD2
+setBlendWhite	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################

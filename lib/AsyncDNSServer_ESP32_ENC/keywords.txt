@@ -1,0 +1,36 @@
+#######################################
+# Syntax Coloring Map For Ultrasound
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DNSHeader	KEYWORD1
+AsyncDNSServer	KEYWORD1
+AsyncDNSReplyCode	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+###################
+# General
+###################
+
+requestIncludesOnlyOneQuestion KEYWORD2
+downcaseAndRemoveWwwPrefix KEYWORD2
+getDomainNameWithoutWwwPrefix  KEYWORD2
+
+###################
+# AsyncDNSServer
+###################
+
+setErrorReplyCode  KEYWORD2
+setTTL  KEYWORD2
+start	KEYWORD2
+stop	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################

@@ -1,0 +1,25 @@
+{
+  "name": "ATtinySerialOut",
+  "keywords": "Serial, ATtiny, debug",
+  "description": "Minimal bit-bang send serial 115200 or 38400 baud for 1 MHz or 230400 baud on 8/16 MHz Attiny clock.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArminJo/ATtinySerialOut"
+  },
+  "version": "2.2.0",
+  "exclude": "pictures",
+  "authors": {
+    "name": "Armin Joachimsmeyer",
+    "email": "armin.arduino@gmail.com",
+    "maintainer": true
+  },
+  "license": "GPL-3.0-or-later",
+  "frameworks": "arduino",
+  "platforms": [
+    "atmelavr",
+    "atmelmegaavr",
+    "espressif8266",
+    "espressif32",
+    "ststm32"
+  ]
+}
