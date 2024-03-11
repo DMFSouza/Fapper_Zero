@@ -38,6 +38,8 @@
 
 <li><strong><a href="#sd">SD Logs</a></strong></li>
 
+<li><strong><a href="#bugs">Bugs</a></strong></li>
+
 <li><strong><a href="#disclaimer">Disclaimer</a></strong></li>
 
 # Introduction<a id="introduction"></a>
@@ -103,6 +105,11 @@ The RF mode is still under development, currently having only the graphical inte
 </div>
 
 <li>In the SD menu, you can view all the captured credentials from the captive portal in a tabular format.</li>
+
+# Bugs<a id="bugs"></a>
+
+The code has some bugs, the main one being related to the return option not working when accessing a table. I am working to configure the rotary encoder to understand the return function. I ask for everyone's understanding as this is a preliminary version of the code, and I am updating this project only in my free time. Any help in its development or improvement will be greatly appreciated.
+
 
 # Disclaimer<a id="disclaimer"></a>
 
