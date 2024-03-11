@@ -6,33 +6,21 @@
 #include "pin_config.h"
 #include <vector>
 
-
-static void draw_sd_cb(lv_event_t * e)
+static lv_obj_t *container;
+void return_function(lv_event_t *e)
 {
-    lv_obj_t * obj = lv_event_get_target(e);
-    lv_obj_draw_part_dsc_t * dsc = lv_event_get_draw_part_dsc(e);
-    /*If the cells are drawn...*/
-    if(dsc->part == LV_PART_ITEMS) {
-        uint32_t row = dsc->id /  lv_table_get_col_cnt(obj);
-        uint32_t col = dsc->id - row * lv_table_get_col_cnt(obj);
+  if (container == nullptr)
+        return;
+ void *group_void = lv_obj_get_group(container);
 
-        /*Make the texts in the first cell center aligned*/
-        if(row == 0) {
-            dsc->label_dsc->align = LV_TEXT_ALIGN_CENTER;
-            dsc->rect_dsc->bg_color = lv_color_mix(lv_palette_main(LV_PALETTE_BLUE), dsc->rect_dsc->bg_color, LV_OPA_20);
-            dsc->rect_dsc->bg_opa = LV_OPA_COVER;
-        }
-        /*In the first column align the texts to the right*/
-        else if(col == 0) {
-            dsc->label_dsc->align = LV_TEXT_ALIGN_RIGHT;
-        }
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t *ta = lv_event_get_target(e);
+  lv_obj_t *kb = (lv_obj_t *)lv_event_get_user_data(e);
 
-        /*MAke every 2nd row grayish*/
-        if((row != 0 && row % 2) == 0) {
-            dsc->rect_dsc->bg_color = lv_color_mix(lv_palette_main(LV_PALETTE_GREY), dsc->rect_dsc->bg_color, LV_OPA_10);
-            dsc->rect_dsc->bg_opa = LV_OPA_COVER;
-        }
-    }
+  //lv_obj_add_flag(kb, LV_OBJ_FLAG_HIDDEN);
+ // lv_group_set_editing((lv_group_t *)lv_obj_get_group(kb), false);
+  lv_group_focus_obj(ta);
+
 }
 void lv_sd_window(lv_obj_t *parent)
 {
@@ -40,7 +28,7 @@ void lv_sd_window(lv_obj_t *parent)
  // lv_obj_t *container = lv_obj_create(parent);
  // lv_obj_set_size(container, 290, 150);
  // lv_obj_align(container, LV_ALIGN_TOP_MID, 0, 15);
-
+ 
   pinMode(PIN_SD_CS, OUTPUT);
   digitalWrite(PIN_SD_CS, 1);
   SD_MMC.setPins(PIN_SD_SCK, PIN_SD_MOSI, PIN_SD_MISO);
@@ -77,6 +65,9 @@ void lv_sd_window(lv_obj_t *parent)
   }
 
   lv_obj_t *table = lv_table_create(parent);
+ // lv_obj_set_parent(parent,table);
+
+  container= parent;
   lv_table_set_col_cnt(table, 2); // Defina o número de colunas
 
   // Adicione cabeçalhos à tabela
@@ -120,8 +111,7 @@ void lv_sd_window(lv_obj_t *parent)
   lv_obj_set_width(table, 290);
   lv_obj_center(table);
 
-  /*Add an event callback to apply some custom drawing*/
-  lv_obj_add_event_cb(table, draw_sd_cb, LV_EVENT_DRAW_PART_BEGIN, NULL);
+  lv_obj_add_event_cb(table,return_function,LV_EVENT_CLICKED,NULL);
 }
 
 
