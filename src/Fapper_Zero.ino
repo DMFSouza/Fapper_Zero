@@ -37,6 +37,10 @@
 #include <sstream>
 #include "Fapper_zero.h"
 #include <nvs_flash.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
+
+
 String text;
 #define WIFI_CHANNEL_SWITCH_INTERVAL  (500)
 #define WIFI_CHANNEL_MAX               (13)
@@ -44,7 +48,8 @@ String text;
 uint8_t level = 0, channel = 1;
 
 static wifi_country_t wifi_country = {.cc="BR", .schan = 1, .nchan = 13};
-
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org");
 typedef struct {
     uint8_t cmd;
     uint8_t data[14];
@@ -198,7 +203,14 @@ text <<"Scan WiFi"<< "\n"
 
 std::string resultString = text.str();
 lv_label_set_text(log_label, resultString.c_str());
-  
+timeClient.update();
+String dateTimeString =timeClient.getFormattedTime();
+File f = SD_MMC.open("/wifi/sniffer_logs/logs.txt", FILE_APPEND);
+  if (f) {
+    f.println(dateTimeString.c_str());
+    f.println(resultString.c_str());
+    f.close();
+  }  
 }
 static void lv_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p)
 {
@@ -237,12 +249,9 @@ void setup()
     digitalWrite(PIN_POWER_ON, HIGH);
 
     Serial.begin(115200);
-    Serial.printf("psram size : %d kb\r\n", ESP.getPsramSize() / 1024);
-    Serial.printf("FLASH size : %d kb\r\n", ESP.getFlashChipSize() / 1024);
 
     SPIFFS.begin(true);
-    Serial.printf("SPIFFS totalBytes : %d kb\r\n", SPIFFS.totalBytes() / 1024);
-    Serial.printf("SPIFFS usedBytes : %d kb\r\n", SPIFFS.usedBytes() / 1024);
+
    
    button.attachLongPressStart(
     []() {
@@ -313,7 +322,6 @@ void loop()
     time++;
     dnsServer.processNextRequest();
     server.handleClient();
-    
     for (uint16_t i = 0; i < 7; i++) {
         colors[i] = hsvToRgb((uint32_t)time * 359 / 256, 255, 255);
     }
@@ -324,7 +332,6 @@ void loop()
       channel = (channel % WIFI_CHANNEL_MAX) + 1;
       delay(2000);
     }
-   
 }
 
 
