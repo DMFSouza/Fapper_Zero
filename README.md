@@ -68,6 +68,9 @@ This project includes all the features of the original firmware and some enhance
 
  
 ## 2) Firmware<a id="wifi"></a>
+<div align="center">
+  <img src="https://github.com/DMFSouza/Fapper_zeroV1/tree/main/images/wifi.jpg" alt="IMAGE ALT TEXT"></a>
+</div>
 
 - Install the .bin from OTA
 - or -->
@@ -76,7 +79,6 @@ This project includes all the features of the original firmware and some enhance
 - Select .bin file
 - Press Flash ESP (You may need to put your device in download mode)
 
-<a href="https://github.com/esphome/esphome-flasher/releases">ESPHome-Flasher</a>
 
  ## 3) Webpanel<a id="usb"></a>
  
