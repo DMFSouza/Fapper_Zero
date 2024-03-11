@@ -66,6 +66,19 @@ This code aims to be an Open Source alternative to the Flipper Zero. It is based
 <div align="center">
   <img src="images/wifi.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
 </div>
+In WiFi mode, there are four modes, with only two currently functional.
+<br><br>
+<li><strong>Sniffer Mode:</strong> This mode allows you to connect to a Wi-Fi network and sniff its packets. The packets will be displayed on the screen, and the logs will be saved on the SD card.</li>
+<br>
+<li><strong>Deauther Mode - Under construction</strong></li>
+<br>
+<li><strong>Captive Portal Mode:</strong> Captive Portal Mode: This mode allows you to create a captive portal capable of capturing credentials. The pages can be customized; you just need to create your HTML and place it in the /captive_portals/pages folder. In the corresponding menu, a dropdown field with all available HTML pages will be presented. After selecting your preferred one and clicking Start, a local network will be created with the name of your HTML plus "Wifi-4G". For example, if your HTML file is named "lospolloshermanos", your SSID will be "lospolloshermanos-wifi-4G". Easy, right?
+
+How do you know if you've succeeded? A calm fishing animation will be displayed. When you catch a fish, an image of the capture will be shown on your screen.
+
+And where do the credentials go? Captured credentials are saved in the logs folder and can be accessed in the SD option of the main menu.</li>
+
+<li><strong>Evil Twin Mode - Under construction</strong></li>
 
 # Usb Mode<a id="usb"></a>
 
@@ -73,17 +86,23 @@ This code aims to be an Open Source alternative to the Flipper Zero. It is based
   <img src="images/usb.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
 </div>
 
+<li>In USB mode, you can save your Rubber Ducky scripts in text format in the duckyscripts folder on the SD card. When accessing the menu, a dropdown field with all the scripts from the folder will be presented. Select the one you desire, and after connecting the hardware to the target device, click on Start, and watch the magic happen.</li>
+
 # RF Mode<a id="rf"></a>
 
 <div align="center">
   <img src="images/RF.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
 </div>
+<li><strong>Under construction</strong></li>
+The RF mode is still under development, currently having only the graphical interface available.
 
 # SD Logs<a id="sd"></a>
 
 <div align="center">
   <img src="images/SD.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
 </div>
+
+<li>In the SD menu, you can view all the captured credentials from the captive portal in a tabular format.</li>
 
 # Disclaimer<a id="disclaimer"></a>
 
