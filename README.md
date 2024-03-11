@@ -108,7 +108,7 @@ The RF mode is still under development, currently having only the graphical inte
 
 # Bugs<a id="bugs"></a>
 
-The code has some bugs, the main one being related to the return option not working when accessing a table. I am working to configure the rotary encoder to understand the return function. I ask for everyone's understanding as this is a preliminary version of the code, and I am updating this project only in my free time. Any help in its development or improvement will be very welcome; I ask that you only use the Develop branch for commits.
+The code has some bugs, I ask for everyone's understanding as this is a preliminary version of the code, and I am updating this project only in my free time. Any help in its development or improvement will be very welcome; I ask that you only use the Develop branch for commits.
 
 
 # Disclaimer<a id="disclaimer"></a>
