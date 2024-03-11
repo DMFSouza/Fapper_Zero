@@ -226,7 +226,15 @@ static void deauther_config(lv_event_t *e)
 
 static void deauth_change_focus(lv_event_t * e)
 {
-   
+ if (container_obj == nullptr)
+        return;
+ void *group_void = lv_obj_get_group(container_obj);
+
+  lv_event_code_t code = lv_event_get_code(e);
+  lv_obj_t *ta = lv_event_get_target(e);
+  lv_obj_t *kb = (lv_obj_t *)lv_event_get_user_data(e);
+
+  lv_group_focus_obj(ta);
 
 }
 
