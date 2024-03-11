@@ -1,14 +1,14 @@
 # Fapper Zero Firmware  HUN73R.0047
 
 <strong>Firmware designed and developed by</strong> David Miguel (HUN73R.0047) (https://github.com/DMFSouza).
+<br>
 
-<br><br>
 <strong>If you enjoyed this project, consider buying me a coffee:</strong>
 <br><br>
 <a href="https://www.buymeacoffee.com/davidmiguel">
   <img src="https://github.com/DMFSouza/EvilCrowRF_HUN73R.0047/blob/main/images/bmc_qr.png" alt="coffee" width="350" height="350">
 </a>
-<br><br><br>
+<br><br>
 <strong>If you're Brazilian, consider using Pix key:</strong>
 <br><br>
 <a href="#">
