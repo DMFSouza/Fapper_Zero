@@ -21,26 +21,28 @@
 
 <br>
 
-
 # Summary
 
-- [Installation](#installation)
-  - [SD Files](#sdfiles)
-  - [Lib Files](#lib)
-  - [Arduino IDE Config](#ide)
+<li><strong><a href="#installation">Installation</a></strong></li>
+<ul>
+<li><a href="#sdfiles">1)SD files</a></li>
+<li><a href="#lib">2)Lib files</a></li>
+<li><a href="#ide">3)Arduino IDE Config</a></li>
 
-- [Wifi Mode](#wifi)
 
-- [Usb Mode](#usb)
+</ul>
 
-- [RF Mode](#rf)
+<li><strong><a href="#wifi">Wifi Mode</a></strong></li>
 
-- [SD Logs](#sd)
+<li><strong><a href="#usb">Usb Mode</a></strong></li>
 
-- [Disclaimer](#disclaimer)
+<li><strong><a href="#rf">RF Mode</a></strong></li>
 
-# Introduction
+<li><strong><a href="#sd">SD Logs</a></strong></li>
 
+<li><strong><a href="#disclaimer">Disclaimer</a></strong></li>
+
+# Introduction<a id="introduction"></a>
 This firmware is an alternative to the EvilCrowRF default firmware.
 
 This project includes all the features of the original firmware and some enhancements such as:
@@ -54,18 +56,22 @@ This project includes all the features of the original firmware and some enhance
 </ul>
 
 
-# Installation
+# Installation<a id="installation"></a>
 
-## 1) SD Files
-
+## 1) SD Files<a id="sdfiles"></a>
 - Download everything from the 'SD_CARD' folder and place it on a MicroSD card.
 
-# Wifi Mode
-![Wi-Fi Image](images/wifi.jpg)
+# Wifi Mode<a id="#wifi"></a>
+<ul>
+<div align="center">
+  <img src="images/wifi.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+</div>
 
-# Disclaimer
 
-Evil Crow RF is a basic device for professionals and cybersecurity enthusiasts. We are not responsible for the incorrect use of Evil Crow RF. Be careful with this device and the transmission of signals. Make sure to follow the laws that apply to your country.
+# Disclaimer<a id="disclaimer"></a>
+
+Evil Crow RF is a basic device for professionals and cybersecurity enthusiasts.
+
 We are not responsible for the incorrect use of Evil Crow RF.
 
 Be careful with this device and the transmission of signals. Make sure to follow the laws that apply to your country.
