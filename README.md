@@ -16,9 +16,7 @@
 </a>
 <br>
 </ul>
-
 <br>
-
 <br>
 
 # Summary
@@ -61,12 +59,30 @@ This project includes all the features of the original firmware and some enhance
 ## 1) SD Files<a id="sdfiles"></a>
 - Download everything from the 'SD_CARD' folder and place it on a MicroSD card.
 
-# Wifi Mode<a id="#wifi"></a>
-<ul>
+
+# Wifi Mode<a id="wifi"></a>
+
 <div align="center">
   <img src="images/wifi.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
 </div>
 
+# Usb Mode<a id="usb"></a>
+
+<div align="center">
+  <img src="images/usb.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+</div>
+
+# RF Mode<a id="rf"></a>
+
+<div align="center">
+  <img src="images/RF.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+</div>
+
+# SD Logs<a id="sd"></a>
+
+<div align="center">
+  <img src="images/SD.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+</div>
 
 # Disclaimer<a id="disclaimer"></a>
 
