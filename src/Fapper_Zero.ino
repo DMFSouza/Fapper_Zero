@@ -267,7 +267,6 @@ void setup()
       esp_deep_sleep_start();
     }
    );
-    
     SD_init();
 
     xTaskCreatePinnedToCore(ui_task, "ui_task", 1024 * 40, NULL, 3, NULL, 1);
