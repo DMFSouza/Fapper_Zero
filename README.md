@@ -65,47 +65,63 @@ This code aims to be an Open Source alternative to the Flipper Zero. It is based
 
 # Wifi Mode<a id="wifi"></a>
 
-<div align="center">
-  <img src="images/wifi.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
-</div>
+<img src="images/wifi.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
 In WiFi mode, there are four modes, with only two currently functional.
 <br><br>
 <li><strong>Sniffer Mode:</strong> This mode allows you to connect to a Wi-Fi network and sniff its packets. The packets will be displayed on the screen, and the logs will be saved on the SD card.</li>
+  <img src="images/sniff-menu.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+  <br>
+   <img src="images/sniff-prompt.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+     <br>
+   <img src="images/sniffer.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
 <br>
 <li><strong>Deauther Mode - Under construction</strong></li>
 <br>
 <li><strong>Captive Portal Mode:</strong> Captive Portal Mode: This mode allows you to create a captive portal capable of capturing credentials. The pages can be customized; you just need to create your HTML and place it in the /captive_portals/pages folder. In the corresponding menu, a dropdown field with all available HTML pages will be presented. After selecting your preferred one and clicking Start, a local network will be created with the name of your HTML plus "Wifi-4G". For example, if your HTML file is named "lospolloshermanos", your SSID will be "lospolloshermanos-wifi-4G". Easy, right?
-
+ <br>
+   <img src="images/captive-menu.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
 How do you know if you've succeeded? A calm fishing animation will be displayed. When you catch a fish, an image of the capture will be shown on your screen.
-
+ <br>
+   <img src="images/phishing.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
 And where do the credentials go? Captured credentials are saved in the logs folder and can be accessed in the SD option of the main menu.</li>
-
+ <br>
+   <img src="images/phished.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+<br>
+And then? An error page will be opened on the network:
+ <br>
+   <img src="images/error.png" alt="IMAGE ALT TEXT" width="50%"></a>
+<br>
 <li><strong>Evil Twin Mode - Under construction</strong></li>
 
 # Usb Mode<a id="usb"></a>
 
-<div align="center">
-  <img src="images/usb.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
-</div>
+
+<img src="images/usb.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
 
 <li>In USB mode, you can save your Rubber Ducky scripts in text format in the duckyscripts folder on the SD card. When accessing the menu, a dropdown field with all the scripts from the folder will be presented. Select the one you desire, and after connecting the hardware to the target device, click on Start, and watch the magic happen.</li>
-
+<br>
+   <img src="images/usb-menu.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+   
 # RF Mode<a id="rf"></a>
 
-<div align="center">
   <img src="images/RF.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
-</div>
+
 <li><strong>Under construction</strong></li>
 The RF mode is still under development, currently having only the graphical interface available.
-
+<br>
+   <img src="images/rf-menu.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+   
 # SD Logs<a id="sd"></a>
 
-<div align="center">
   <img src="images/SD.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
-</div>
 
 <li>In the SD menu, you can view all the captured credentials from the captive portal in a tabular format.</li>
-
+<br>
+   
+   <img src="images/table.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+   
 # Bugs<a id="bugs"></a>
 
 The code has some bugs, I ask for everyone's understanding as this is a preliminary version of the code, and I am updating this project only in my free time. Any help in its development or improvement will be very welcome; I ask that you only use the Develop branch for commits.
