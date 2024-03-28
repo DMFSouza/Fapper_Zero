@@ -5,6 +5,7 @@
 #include "sd_window.h"
 #include "wifi_menu.h"
 #include "rf_menu.h"
+#include "rfid.h"
 
 
 #define LV_DELAY(x)                                                                                                                                  \

@@ -1,4 +1,4 @@
-  #ifndef BOARD_HAS_PSRAM
+#ifndef BOARD_HAS_PSRAM
 #error "PSRAM is not ENABLE, Please set ArduinoIDE PSRAM option to OPI!"
 #endif
 
@@ -120,6 +120,7 @@ typedef struct {
 
 static esp_err_t event_handler(void *ctx, system_event_t *event);
 void wifi_sniffer_init(void);
+void rfid_init(void);
 static void wifi_sniffer_set_channel(uint8_t channel);
 static const char *wifi_sniffer_packet_type2str(wifi_promiscuous_pkt_type_t type);
 static void wifi_sniffer_packet_handler(void *buff, wifi_promiscuous_pkt_type_t type);
@@ -128,6 +129,7 @@ esp_err_t event_handler(void *ctx, system_event_t *event)
 {
   return ESP_OK;
 }
+
 
 void wifi_sniffer_init(void)
 {
@@ -256,14 +258,34 @@ void setup()
    button.attachLongPressStart(
     []() {
     
-      digitalWrite(PIN_APA102_CLK, LOW);
-      digitalWrite(PIN_APA102_DI, LOW);
-      digitalWrite(RADIO_CS_PIN, LOW);  // Desativa rádio (exemplo)
-      digitalWrite(PIN_RF_MISO, LOW);
-      digitalWrite(PIN_RF_RST, LOW);
-      delay(100);
-      digitalWrite(PIN_LCD_BL, LOW);
-      digitalWrite(PIN_POWER_ON, LOW);
+    digitalWrite(PIN_IIC_SDA, LOW);
+    digitalWrite(PIN_IIC_SCL, LOW);
+    digitalWrite(PIN_APA102_CLK , LOW);
+    digitalWrite(PIN_APA102_DI, LOW);
+    digitalWrite(PIN_ENCODE_A, LOW);
+    digitalWrite(PIN_ENCODE_B , LOW);
+    digitalWrite(PIN_ENCODE_BTN , LOW);
+    digitalWrite(PIN_LCD_BL, LOW);
+    digitalWrite(PIN_LCD_DC, LOW);
+    digitalWrite(PIN_LCD_CS, LOW);
+    digitalWrite(PIN_LCD_CLK, LOW);
+    digitalWrite(PIN_LCD_MOSI, LOW);
+    digitalWrite(PIN_LCD_RES , LOW);
+    digitalWrite(PIN_BAT_VOLT, LOW);
+    digitalWrite(PIN_IIS_BCLK, LOW);
+    digitalWrite(PIN_IIS_WCLK, LOW);
+    digitalWrite(PIN_IIS_DOUT, LOW);
+    digitalWrite(PIN_ES7210_BCLK, LOW);
+    digitalWrite(PIN_ES7210_LRCK, LOW);
+    digitalWrite(PIN_ES7210_DIN , LOW);
+    digitalWrite(PIN_ES7210_MCLK, LOW);
+    digitalWrite(PIN_SD_CS , LOW);
+    digitalWrite(PIN_SD_SCK, LOW);
+    digitalWrite(PIN_SD_MOSI, LOW);
+    digitalWrite(PIN_SD_MISO, LOW);
+    digitalWrite(RFID_SCL, LOW);
+    digitalWrite(RFID_SDA, LOW);
+
       esp_deep_sleep_start();
     }
    );
@@ -321,16 +343,19 @@ void loop()
     time++;
     dnsServer.processNextRequest();
     server.handleClient();
+    
     for (uint16_t i = 0; i < 7; i++) {
         colors[i] = hsvToRgb((uint32_t)time * 359 / 256, 255, 255);
     }
     ledStrip.write(colors, 7, brightness);
     delay(1000);
+    
     if (sniff_init){
        wifi_sniffer_set_channel(channel);
       channel = (channel % WIFI_CHANNEL_MAX) + 1;
       delay(2000);
     }
+
 }
 
 
