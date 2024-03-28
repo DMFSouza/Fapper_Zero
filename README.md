@@ -38,6 +38,8 @@
 
 <li><strong><a href="#sd">SD Logs</a></strong></li>
 
+<li><strong><a href="#sleepMode">Sleep Mode</a></strong></li>
+
 <li><strong><a href="#bugs">Bugs</a></strong></li>
 
 <li><strong><a href="#disclaimer">Disclaimer</a></strong></li>
@@ -121,6 +123,11 @@ The RF mode is still under development, currently having only the graphical inte
 <br>
    
    <img src="images/table.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
+# Sleep Mode<a id="sleepMode"></a>
+
+Press the central button of the encoder to activate Sleep mode. When this mode is activated, all pins will be set to low, and the device will enter power-saving mode.
+
    
 # Bugs<a id="bugs"></a>
 
