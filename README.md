@@ -36,6 +36,8 @@
 
 <li><strong><a href="#rf">RF Mode</a></strong></li>
 
+<li><strong><a href="#rfid">RFID Mode</a></strong></li>
+
 <li><strong><a href="#sd">SD Logs</a></strong></li>
 
 <li><strong><a href="#sleepMode">Sleep Mode</a></strong></li>
@@ -114,6 +116,28 @@ And then? An error page will be opened on the network:
 The RF mode is still under development, currently having only the graphical interface available.
 <br>
    <img src="images/rf-menu.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
+
+# RFID Mode<a id="rfid"></a>
+
+  <img src="images/RFID.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
+<li><strong>Under construction</strong></li>
+
+For the RFID module, I'm using an RFID module from M5 Stack, which is a modified MFRC522 designed to work with I2C. I removed it from its original case and attached it to the back of the T-Embed as shown in the image.
+This module is still under development and is not finalized yet; any assistance would be greatly appreciated.
+<br>
+   <img src="images/MODULO1.jpeg" alt="IMAGE ALT TEXT" width="25%"></a> <img src="images/MODULO2.jpeg" alt="IMAGE ALT TEXT" width="30%"></a>
+
+  
+
+   <img src="images/MODULO3.jpeg" alt="IMAGE ALT TEXT" width="30%"></a>
+
+   <img src="images/RFIDMENU2.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
+   <img src="images/RFID_MENU1.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
+  
    
 # SD Logs<a id="sd"></a>
 
