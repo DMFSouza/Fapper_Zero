@@ -375,8 +375,15 @@ class MFRC522 {
     bool authenticated;
     MIFARE_Key key;
   };
+
+  struct infoDump {
+      String infoDumpStr;
+  
+  };
+  static infoDump info;
   // Array de estruturas para armazenar o status de autenticação e as chaves de cada setor
   SectorInfo sectorStatus[40][4]; // 40 setores, 4 blocos por setor
+
     // Size of the MFRC522 FIFO
     static const byte FIFO_SIZE = 64;  // The FIFO is 64 bytes.
 
@@ -478,5 +485,6 @@ class MFRC522 {
                               // power down input (Pin 6, NRSTPD, active low)
     byte MIFARE_TwoStepHelper(byte command, byte blockAddr, long data);
 };
+
 
 #endif

@@ -20,7 +20,7 @@
  * Constructor.
  * Prepares the output pins.
  */
-
+MFRC522::infoDump MFRC522::info;
 
 MFRC522::MFRC522(
     byte chipAddress
@@ -1572,6 +1572,8 @@ void MFRC522::PICC_DumpMifareClassicToSerial(
         Serial.println(
             F("Sector Block   0  1  2  3   4  5  6  7   8  9 10 11  12 13 14 "
               "15  AccessBits"));
+       MFRC522::info.infoDumpStr= F("Sector Block   0  1  2  3   4  5  6  7   8  9 10 11  12 13 14 "
+              "15  AccessBits\n");
         for (int8_t i = no_of_sectors - 1; i >= 0; i--) {
             PICC_DumpMifareClassicSectorToSerial(uid, key, i);
         }
@@ -1638,26 +1640,39 @@ void MFRC522::PICC_DumpMifareClassicSectorToSerial(
         blockAddr = firstBlock + blockOffset;
         // Sector number - only on first line
         if (isSectorTrailer) {
-            if (sector < 10)
+            if (sector < 10){
                 Serial.print(F("   "));  // Pad with spaces
-            else
+               MFRC522::info.infoDumpStr+=F("   ");
+            } else{
                 Serial.print(F("  "));  // Pad with spaces
-            Serial.print(sector);
-            Serial.print(F("   "));
+               MFRC522::info.infoDumpStr+=F("   ");
+                Serial.print(sector);
+               MFRC522::info.infoDumpStr+=sector;
+                Serial.print(F("   "));
+               MFRC522::info.infoDumpStr+=F("   ");
+            }
+           
         } else {
             Serial.print(F("       "));
+           MFRC522::info.infoDumpStr+=F("       ");
         }
         // Block number
-        if (blockAddr < 10)
+        if (blockAddr < 10){
             Serial.print(F("   "));  // Pad with spaces
-        else {
-            if (blockAddr < 100)
+           MFRC522::info.infoDumpStr+=F("   ");
+        }else {
+            if (blockAddr < 100){
                 Serial.print(F("  "));  // Pad with spaces
-            else
+               MFRC522::info.infoDumpStr+=F(" ");
+            }else{
                 Serial.print(F(" "));  // Pad with spaces
+               MFRC522::info.infoDumpStr+=F(" ");
+            }
         }
         Serial.print(blockAddr);
+       MFRC522::info.infoDumpStr+=blockAddr;
         Serial.print(F("  "));
+       MFRC522::info.infoDumpStr+=F("  ");
         // Establish encrypted communications before reading the first block
         if (isSectorTrailer) {
             status =
@@ -1670,6 +1685,7 @@ void MFRC522::PICC_DumpMifareClassicSectorToSerial(
               // Marcar o status de autenticação como verdadeiro apenas se a leitura for bem-sucedida
               MFRC522::sectorStatus[sector][blockOffset].authenticated = true;
               MFRC522::sectorStatus[sector][blockOffset].key = *key;
+              
             }
         }
         // Read block
@@ -1683,13 +1699,18 @@ void MFRC522::PICC_DumpMifareClassicSectorToSerial(
 
         // Dump data
         for (byte index = 0; index < 16; index++) {
-            if (buffer[index] < 0x10)
+            if (buffer[index] < 0x10){
                 Serial.print(F(" 0"));
-            else
+               MFRC522::info.infoDumpStr+=F(" 0");
+            }else{
                 Serial.print(F(" "));
-            Serial.print(buffer[index], HEX);
+               MFRC522::info.infoDumpStr+=F(" ");
+                Serial.print(buffer[index], HEX);
+               MFRC522::info.infoDumpStr+=String(buffer[index], HEX);
+            }
             if ((index % 4) == 3) {
                 Serial.print(F(" "));
+               MFRC522::info.infoDumpStr+=F(" ");
             }
         }
         // Parse sector trailer data
@@ -1721,12 +1742,19 @@ void MFRC522::PICC_DumpMifareClassicSectorToSerial(
         if (firstInGroup) {
             // Print access bits
             Serial.print(F(" [ "));
+           MFRC522::info.infoDumpStr+=F(" [ ");
             Serial.print((g[group] >> 2) & 1, DEC);
+           MFRC522::info.infoDumpStr+=String((g[group] >> 2) & 1, DEC);
             Serial.print(F(" "));
+           MFRC522::info.infoDumpStr+=F(" ");
             Serial.print((g[group] >> 1) & 1, DEC);
+           MFRC522::info.infoDumpStr+=String((g[group] >> 1) & 1, DEC);
             Serial.print(F(" "));
+           MFRC522::info.infoDumpStr+=F(" ");
             Serial.print((g[group] >> 0) & 1, DEC);
+           MFRC522::info.infoDumpStr+=String((g[group] >> 0) & 1, DEC);
             Serial.print(F(" ] "));
+           MFRC522::info.infoDumpStr+=F(" ] \n");
             if (invertedError) {
                 Serial.print(F(" Inverted access bits did not match! "));
             }
@@ -1738,9 +1766,13 @@ void MFRC522::PICC_DumpMifareClassicSectorToSerial(
             long value = (long(buffer[3]) << 24) | (long(buffer[2]) << 16) |
                          (long(buffer[1]) << 8) | long(buffer[0]);
             Serial.print(F(" Value=0x"));
+           MFRC522::info.infoDumpStr+=F(" Value=0x");
             Serial.print(value, HEX);
+           MFRC522::info.infoDumpStr+=String(value, HEX);
             Serial.print(F(" Adr=0x"));
+           MFRC522::info.infoDumpStr+=F(" Adr=0x");
             Serial.print(buffer[12], HEX);
+            MFRC522::info.infoDumpStr+=String(buffer[12], HEX);
         }
         Serial.println();
     }

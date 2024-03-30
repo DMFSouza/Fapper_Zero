@@ -1,3 +1,4 @@
+#include <Arduino.h>
 #include "RFID.h"
 #include "Fapper_Zero.h"
 #include "ui.h"
@@ -5,6 +6,12 @@
 #include <Wire.h>
 #include "MFRC522_I2C.h"
 #include "pin_config.h"
+#include <SPIFFS.h>
+#include <SPI.h>
+#include <SD_MMC.h>
+#include <iostream>
+#include <cstdio>
+
 
 LV_FONT_DECLARE(lv_font_montserrat_10);
 MFRC522 mfrc522(0x28);
@@ -18,6 +25,8 @@ static void read_function(lv_event_t *e);
 static void save_function(lv_event_t *e);
 static void create_container();
 static void dump_result();
+static void save_uid(lv_event_t *e);
+static void save_dump(lv_event_t *e);
 
 
 static lv_obj_t *container_obj = nullptr;
@@ -29,6 +38,19 @@ static  lv_obj_t * btn4 =  nullptr;
 static  lv_obj_t * btn5 =  nullptr;
 static  lv_obj_t * btn6 =  nullptr;
 static  lv_obj_t * btn7 =  nullptr;
+
+static String sMessage;
+static char path[22];
+
+struct RFIDData {
+    String cID;
+    String uidString;
+    String cSAK;
+    String cATQA;
+    String cData;
+};
+
+RFIDData data;
 
 static void event_handler(lv_event_t *e)
 {
@@ -111,27 +133,30 @@ static void read_config(lv_event_t *e)
 
 
  
-  lv_obj_set_size(btn5,80,30);
+  lv_obj_set_size(btn5,70,30);
   lv_obj_add_flag(btn5, LV_OBJ_FLAG_HIDDEN);
-  lv_obj_add_event_cb(btn5, save_function, LV_EVENT_CLICKED, NULL);
+  lv_obj_add_event_cb(btn5, save_uid, LV_EVENT_CLICKED, NULL);
   lv_obj_align(btn5,  LV_ALIGN_TOP_MID, -40, 70);
   lv_obj_t *label2 = lv_label_create(btn5);
+  lv_obj_set_style_text_font(label2, &lv_font_montserrat_10, 0);
   lv_label_set_text(label2, "Save UID");
   lv_obj_center(label2);
 
 
   
-  lv_obj_set_size(btn6,80,30);
+  lv_obj_set_size(btn6,70,30);
   lv_obj_add_flag(btn6, LV_OBJ_FLAG_HIDDEN);
+  
   lv_obj_add_event_cb(btn6, try_dump, LV_EVENT_CLICKED, NULL);
-  lv_obj_align(btn6,  LV_ALIGN_TOP_MID, +50, 70);
+  lv_obj_align(btn6,  LV_ALIGN_TOP_MID, +40, 70);
   lv_obj_t *label3 = lv_label_create(btn6);
-  lv_label_set_text(label3, "Try Dump");
+  lv_obj_set_style_text_font(label3, &lv_font_montserrat_10, 0);
+  lv_label_set_text(label3, "Default Keys");
   lv_obj_center(label3);
 
   lv_obj_set_size(btn7,120,30);
   lv_obj_add_flag(btn7, LV_OBJ_FLAG_HIDDEN);
-  lv_obj_add_event_cb(btn7, save_function, LV_EVENT_CLICKED, NULL);
+  lv_obj_add_event_cb(btn7, save_uid, LV_EVENT_CLICKED, NULL);
   lv_obj_align(btn7,  LV_ALIGN_TOP_MID, 0, 75);
   lv_obj_t *label4 = lv_label_create(btn7);
   lv_label_set_text(label4, "save found keys");
@@ -147,6 +172,7 @@ static void read_function(lv_event_t *e)
   String cATQA ="";
   String cType ="";
   String uidString = ""; 
+  String cID;
   bool lPesq = false; 
 
   lv_obj_add_flag(btn4, LV_OBJ_FLAG_HIDDEN);
@@ -187,7 +213,7 @@ static void read_function(lv_event_t *e)
       cATQA.concat(atqa[0] < 0x10 ? "0" : ""); 
       cATQA.concat(String(atqa[0], HEX)); 
         for (byte i = 0; i < mfrc522.uid.size; i++) {
-     
+          cID+=mfrc522.uid.uidByte[i];
           uidString += (mfrc522.uid.uidByte[i] < 0x10 ? " 0" : " ");
           String hexByte = String(mfrc522.uid.uidByte[i], HEX); // Converte o byte hexadecimal em String
           hexByte.toUpperCase();
@@ -200,8 +226,29 @@ static void read_function(lv_event_t *e)
           mfrc522.PCD_StopCrypto1();
           lv_label_set_text_fmt(label1,"#03fc07 %s#\n %s\n %s\n %s",uidString,cSAK,cATQA,cType);
           lPesq = true;
-    }
-      break;
+          data.cID = cID;
+          data.uidString = uidString;
+          data.cSAK = cSAK;
+          data.cATQA = cATQA;
+        int messageSize = snprintf(nullptr, 0, "{\"id\":\"%s\",\"uid\":\"%s\",\"sak\":%s,\"atqa\":%s,\"data\":[]}", cID, uidString, cSAK, cATQA);
+        if (messageSize < 0) {
+          std::cerr << "Erro ao calcular o tamanho necessário para message!" << std::endl;
+        }
+
+      // Alocando dinamicamente memória para message
+      char* message = new char[messageSize + 1]; // +1 para o caractere nulo de terminação
+      if (message == nullptr) {
+        std::cerr << "Erro ao alocar memória para message!" << std::endl;
+      }
+
+      // Formatando message
+      sprintf(message, "{\"id\":\"%s\",\"uid\":\"%s\",\"sak\":%s,\"atqa\":%s,\"data\":[]}", cID, uidString, cSAK, cATQA);
+
+      sprintf(path,"/rfid/%s.json",cID);
+      sMessage= String(message);
+      delete[] message;
+      }
+       break;
 
     }
   delay(1000);
@@ -250,13 +297,6 @@ static void dump_result(){
             sprintf(statusString, "%s %c#", color, statusChar);
             status[setor][bloco] = strdup(statusString);
 
-            // Log das informações
-            Serial.print("Setor: ");
-            Serial.print(setor);
-            Serial.print(", Bloco: ");
-            Serial.print(bloco);
-            Serial.print(", Status: ");
-            Serial.println(status[setor][bloco]);
         }
     }
 
@@ -293,9 +333,83 @@ static void dump_result(){
    
     lv_label_set_text_fmt(label0, textBuffer);
 
-    lv_obj_clear_flag(btn7, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_clear_flag(btn7, LV_OBJ_FLAG_HIDDEN); 
+    int messageSize = snprintf(nullptr, 0, "{\"id\":\"%s\",\"uid\":\"%s\",\"sak\":%s,\"atqa\":%s,\"data\":[\n%s]}",data.cID.c_str(),data.uidString.c_str(),data.cSAK.c_str(),data.cATQA.c_str(),mfrc522.info.infoDumpStr.c_str());
+    
+        if (messageSize < 0) {
+          std::cerr << "Erro ao calcular o tamanho necessário para message!" << std::endl;
+        }
+
+      // Alocando dinamicamente memória para message
+      char* message = new char[messageSize + 1]; // +1 para o caractere nulo de terminação
+      if (message == nullptr) {
+        std::cerr << "Erro ao alocar memória para message!" << std::endl;
+      }
+    sprintf(message,"{\"id\":\"%s\",\"uid\":\"%s\",\"sak\":%s,\"atqa\":%s,\"data\":[\n%s]}",data.cID.c_str(),data.uidString.c_str(),data.cSAK.c_str(),data.cATQA.c_str(),mfrc522.info.infoDumpStr.c_str());
+    sMessage= String(message);
+    delete[] message;
 }
 
+static void save_uid(lv_event_t *e){
+  pinMode(PIN_SD_CS, OUTPUT);
+ 
+  digitalWrite(PIN_SD_CS, 1);
+  SD_MMC.setPins(PIN_SD_SCK, PIN_SD_MOSI, PIN_SD_MISO);
+  
+  if (!SD_MMC.begin("/sdcard", true)) {
+      
+      return;
+   }
+  uint8_t cardType = SD_MMC.cardType();
+  if (cardType == CARD_NONE) {    
+       return;
+  }
+  
+  if (cardType == CARD_MMC) {
+  } else if (cardType == CARD_SD) { 
+  } else if (cardType == CARD_SDHC) {
+      
+  }
+  
+
+    File file = SD_MMC.open(path, FILE_WRITE);
+    if(!file){
+        Serial.println("Failed to open file for writing");
+        return;
+    }
+    if (file.print(sMessage.c_str())) {
+      Serial.println("File written");
+      lv_obj_t *mbox1 = lv_msgbox_create(NULL, "Success", "Data saved.", NULL, true);
+      lv_obj_center(mbox1);
+      sMessage = ""; 
+      strcpy(path, "");
+    }else {
+        Serial.println("Write failed");
+    }
+    file.close();
+}
+
+static void save_dump(lv_event_t *e){
+   pinMode(PIN_SD_CS, OUTPUT);
+ 
+  digitalWrite(PIN_SD_CS, 1);
+  SD_MMC.setPins(PIN_SD_SCK, PIN_SD_MOSI, PIN_SD_MISO);
+  
+  if (!SD_MMC.begin("/sdcard", true)) {
+      
+      return;
+   }
+  uint8_t cardType = SD_MMC.cardType();
+  if (cardType == CARD_NONE) {    
+       return;
+  }
+  
+  if (cardType == CARD_MMC) {
+  } else if (cardType == CARD_SD) { 
+  } else if (cardType == CARD_SDHC) {
+      
+  }
+}
 static void write_config(lv_event_t *e){
     create_container();
 }
