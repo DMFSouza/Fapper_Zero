@@ -9,7 +9,7 @@ LV_IMG_DECLARE(usb);
 LV_IMG_DECLARE(sd);
 LV_IMG_DECLARE(rfid_icon);
 LV_IMG_DECLARE(rf);
-
+LV_IMG_DECLARE(config_icon);
 
 static lv_style_t style_frameless;
 static lv_obj_t *main_screen;
@@ -135,6 +135,7 @@ void ui_init(void) {
   create_app(panel, "RFID", &rfid_icon,&rfid_ui);
   create_app(panel, "RF",   &rf,&rf_ui);
   create_app(panel,  "SD",   &sd,&sd_window);
+  create_app(panel,  "Config",   &config_icon,&config_ui);
 
   /* Initialize the label */
   lv_obj_t *desc_label = lv_label_create(menu_panel);

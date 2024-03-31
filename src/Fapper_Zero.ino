@@ -39,9 +39,12 @@
 #include <nvs_flash.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
-
+#include "config.h"
 
 String text;
+bool lRgb =false;
+void rgb_init();
+
 #define WIFI_CHANNEL_SWITCH_INTERVAL  (500)
 #define WIFI_CHANNEL_MAX               (13)
 
@@ -129,7 +132,9 @@ esp_err_t event_handler(void *ctx, system_event_t *event)
 {
   return ESP_OK;
 }
-
+void rgb_init(){
+  lRgb = true;
+}
 
 void wifi_sniffer_init(void)
 {
@@ -285,7 +290,11 @@ void setup()
     digitalWrite(PIN_SD_MISO, LOW);
     digitalWrite(RFID_SCL, LOW);
     digitalWrite(RFID_SDA, LOW);
-
+    digitalWrite(PIN_RF_CLK, LOW);
+    digitalWrite(PIN_RF_MOSI, LOW);
+    digitalWrite(PIN_RF_MISO, LOW);
+    digitalWrite(PIN_RF_RST, LOW);
+    
       esp_deep_sleep_start();
     }
    );
@@ -343,10 +352,24 @@ void loop()
     time++;
     dnsServer.processNextRequest();
     server.handleClient();
-    
-    for (uint16_t i = 0; i < 7; i++) {
+    if(!lRgb){
+      for (uint16_t i = 0; i < 7; i++) {
         colors[i] = hsvToRgb((uint32_t)time * 359 / 256, 255, 255);
+        Serial.print("R: ");
+        Serial.print(colors[i].red);
+        Serial.print(", G: ");
+        Serial.print(colors[i].green);
+        Serial.print(", B: ");
+        Serial.println(colors[i].blue);
+      }
+    }else{
+      for (uint16_t i = 0; i < 7; i++) {
+        colors[i].red = rgb._red;
+        colors[i].green = rgb._green;
+        colors[i].blue = rgb._blue;
+      }
     }
+    
     ledStrip.write(colors, 7, brightness);
     delay(1000);
     
