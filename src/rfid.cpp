@@ -41,7 +41,11 @@ static  lv_obj_t * btn7 =  nullptr;
 
 static String sMessage;
 static char path[22];
+int fileCountOnSD = 0; // for counting files
 
+static char fileDir[8][22];
+static  String ids[8];
+static  String uids[8];
 struct RFIDData {
     String cID;
     String uidString;
@@ -49,8 +53,14 @@ struct RFIDData {
     String cATQA;
     String cData;
 };
-
+static void delet_sd(lv_event_t *e);
 RFIDData data;
+File root;
+
+
+void printDirectory(File dir, int numTabs);
+static void delet_sd(lv_event_t *e,int index);
+static void create_obj();
 
 static void event_handler(lv_event_t *e)
 {
@@ -118,13 +128,14 @@ static void read_config(lv_event_t *e)
       btn6 = nullptr;
       btn7 = nullptr;
       btn4 = lv_btn_create(container_obj);
+      
       btn5 = lv_btn_create(container_obj);
       btn6 = lv_btn_create(container_obj);
       btn7 = lv_btn_create(container_obj);
   }
   lv_label_set_text_fmt(label0,"%s\n%s\n%s\n%s","UID:","SAK:","ATQA:","Tech:");
  
- 
+
   lv_obj_add_event_cb(btn4, read_function, LV_EVENT_CLICKED, NULL);
   lv_obj_align(btn4,  LV_ALIGN_TOP_MID, 0, 70);
   lv_obj_t *label = lv_label_create(btn4);
@@ -153,7 +164,7 @@ static void read_config(lv_event_t *e)
   lv_obj_set_style_text_font(label3, &lv_font_montserrat_10, 0);
   lv_label_set_text(label3, "Default Keys");
   lv_obj_center(label3);
-
+   
   lv_obj_set_size(btn7,120,30);
   lv_obj_add_flag(btn7, LV_OBJ_FLAG_HIDDEN);
   lv_obj_add_event_cb(btn7, save_uid, LV_EVENT_CLICKED, NULL);
@@ -378,7 +389,6 @@ static void save_uid(lv_event_t *e){
         return;
     }
     if (file.print(sMessage.c_str())) {
-      Serial.println("File written");
       lv_obj_t *mbox1 = lv_msgbox_create(NULL, "Success", "Data saved.", NULL, true);
       lv_obj_center(mbox1);
       sMessage = ""; 
@@ -387,29 +397,9 @@ static void save_uid(lv_event_t *e){
         Serial.println("Write failed");
     }
     file.close();
+    read_config(e);
 }
 
-static void save_dump(lv_event_t *e){
-   pinMode(PIN_SD_CS, OUTPUT);
- 
-  digitalWrite(PIN_SD_CS, 1);
-  SD_MMC.setPins(PIN_SD_SCK, PIN_SD_MOSI, PIN_SD_MISO);
-  
-  if (!SD_MMC.begin("/sdcard", true)) {
-      
-      return;
-   }
-  uint8_t cardType = SD_MMC.cardType();
-  if (cardType == CARD_NONE) {    
-       return;
-  }
-  
-  if (cardType == CARD_MMC) {
-  } else if (cardType == CARD_SD) { 
-  } else if (cardType == CARD_SDHC) {
-      
-  }
-}
 static void write_config(lv_event_t *e){
     create_container();
 }
@@ -421,7 +411,155 @@ static void save_function(lv_event_t *e){
 static void load_config(lv_event_t *e)
 {
   create_container();
+  pinMode(PIN_SD_CS, OUTPUT);
+ 
+  digitalWrite(PIN_SD_CS, 1);
+  SD_MMC.setPins(PIN_SD_SCK, PIN_SD_MOSI, PIN_SD_MISO);
+  
+  if (!SD_MMC.begin("/sdcard", true)) {
+      Serial.println("Failed to mount SD card");
+      return;
+   }
+  uint8_t cardType = SD_MMC.cardType();
+  if (cardType == CARD_NONE) {
+       Serial.println("No SD card attached");
+       return;
+  }
+  
+  if (cardType == CARD_MMC) {
+  } else if (cardType == CARD_SD) { 
+  } else if (cardType == CARD_SDHC) {
+      
+  }
+  
+  
+  root = SD_MMC.open("/rfid");
+
+  printDirectory(root, 0);
+  int nPos = -30;
+  lv_obj_t* objArray[fileCountOnSD]; // Array para armazenar os ponteiros dos objetos
+  lv_obj_t* btnArray[fileCountOnSD];
+  lv_obj_t *labelArray[fileCountOnSD];
+  lv_obj_t *labelTxt[fileCountOnSD];
+char path[30];
+char buffer[1024];
+
+
+// Zerando o array de ids
+for (int i = 0; i < 8; ++i) {
+    ids[i] = "";
 }
+
+// Zerando o array de uids
+for (int i = 0; i < 8; ++i) {
+    uids[i] = "";
+}
+for(int x = 0; x < fileCountOnSD; x++) {
+  sprintf(path, "/rfid/%s", fileDir[x]);
+  File file = SD_MMC.open(path);
+  if (!file) {
+    Serial.println("Failed to open file for reading");
+    return;
+  }
+  
+  // Ler apenas a primeira linha do arquivo
+  String firstLine = file.readStringUntil('\n');
+  file.close();
+
+  // Encontrar a posição de "id": e "uid": na primeira linha
+  int idIndex = firstLine.indexOf("\"id\":");
+  int uidIndex = firstLine.indexOf("\"uid\":");
+
+  if (idIndex != -1 && uidIndex != -1) {
+    // Extrair o valor do ID entre "id": e "uid":
+    String idValue = firstLine.substring(idIndex + 6, uidIndex - 2);
+    ids[x] = idValue;
+
+    // Extrair os 11 caracteres do UID após "uid":
+    String uidValue = firstLine.substring(uidIndex + 8, uidIndex + 19); // Ajuste para 11 caracteres
+    uids[x] = uidValue;
+
+    // Imprimir o ID e o UID para verificar
+
+  } else {
+    Serial.println("Could not find 'id' and/or 'uid' in the first line of the file.");
+  }
+}
+ 
+char cTxt[50];
+for (int x = 0; x < fileCountOnSD; x++) {
+   int *btn_no = new int;
+   *btn_no = x;
+    objArray[x] = lv_obj_create(container_obj);
+    lv_obj_set_size(objArray[x], 150, 50);
+    lv_obj_align(objArray[x], LV_ALIGN_LEFT_MID, 0, nPos);
+
+    labelTxt[x] = lv_label_create(objArray[x]);
+    lv_label_set_recolor(labelTxt[x], true); 
+    lv_obj_set_style_text_font(labelTxt[x], &lv_font_montserrat_10, 0);
+    // Use sprintf para formatar a string e armazená-la em cTxt
+    sprintf(cTxt, "ID: %s\nUID: #03fc07 %s#", ids[x].c_str(), uids[x].c_str());
+    lv_label_set_text_fmt(labelTxt[x], cTxt);
+    
+    btnArray[x] = lv_btn_create(objArray[x]);
+    lv_obj_set_size(btnArray[x], 20, 20);
+    lv_obj_align(btnArray[x], LV_ALIGN_BOTTOM_RIGHT, 0, 0);
+    lv_obj_add_event_cb(btnArray[x], delet_sd,LV_EVENT_CLICKED,btn_no);
+    
+    labelArray[x] = lv_label_create(btnArray[x]);
+    lv_label_set_text(labelArray[x], LV_SYMBOL_TRASH);
+    lv_obj_center(labelArray[x]);
+    nPos += 50;
+}
+
+  
+}
+static void delet_sd(lv_event_t *e){
+  int * btn_no;
+  btn_no = (int*)lv_event_get_user_data(e); 
+
+  sprintf(path, "/rfid/%s", fileDir[*btn_no]);
+  delete btn_no;
+
+  Serial.printf("Deleting file: %s\n", path);
+  if(SD_MMC.remove(path)){
+      Serial.println("File deleted");
+  } else {
+      Serial.println("Delete failed");
+  }
+  load_config(e);
+}
+
+void printDirectory(File dir, int numTabs) {
+  fileCountOnSD = (fileCountOnSD>0) ? 0:fileCountOnSD;
+  while (true) {
+    
+    File entry =  dir.openNextFile();
+    if (! entry) {
+      // no more files
+      break;
+    }
+    for (uint8_t i = 0; i < numTabs; i++) {
+       
+    }
+    if (fileCountOnSD<8){
+       strncpy(fileDir[fileCountOnSD], entry.name(), 22);
+      
+    }
+    
+    
+    fileCountOnSD++;
+  
+    if (entry.isDirectory()) {
+   
+      printDirectory(entry, numTabs + 1);
+    } else {
+        
+    }
+    entry.close();
+  }
+}
+
 
 void runRfidWindow(lv_obj_t *parent)
 {

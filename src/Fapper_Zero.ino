@@ -355,12 +355,6 @@ void loop()
     if(!lRgb){
       for (uint16_t i = 0; i < 7; i++) {
         colors[i] = hsvToRgb((uint32_t)time * 359 / 256, 255, 255);
-        Serial.print("R: ");
-        Serial.print(colors[i].red);
-        Serial.print(", G: ");
-        Serial.print(colors[i].green);
-        Serial.print(", B: ");
-        Serial.println(colors[i].blue);
       }
     }else{
       for (uint16_t i = 0; i < 7; i++) {
