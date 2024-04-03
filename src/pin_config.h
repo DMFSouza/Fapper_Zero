@@ -39,12 +39,12 @@
 #define PIN_SD_MOSI           41
 #define PIN_SD_MISO           38
 
-#define RADIO_CS_PIN          17
-#define RFID_SCL         44
-#define RFID_SDA         43
 
-//#define PIN_RF_SDA          
-//#define PIN_RF_CLK            40
-//#define PIN_RF_MOSI           41        
-//#define PIN_RF_MISO           38
-//#define PIN_RF_RST            16
+#define RFID_SCL              44
+#define RFID_SDA              43
+      
+#define PIN_RF_MOSI 16  // IO16 para MOSI
+#define PIN_RF_MISO 17  // IO17 para MISO
+#define PIN_RF_SCK  38   // IO38 para SCK
+#define PIN_RF_SS   40  // IO40 para SS
+#define PIN_RF_GDO  41  // IO41 para GDO*/

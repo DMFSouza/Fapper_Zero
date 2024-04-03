@@ -7,6 +7,7 @@
 #include "rf_menu.h"
 #include "rfid.h"
 #include "config.h"
+#include "ir_control.h"
 
 #define LV_DELAY(x)                                                                                                                                  \
   do {                                                                                                                                               \

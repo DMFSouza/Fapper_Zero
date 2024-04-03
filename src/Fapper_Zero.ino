@@ -258,7 +258,7 @@ void setup()
     Serial.begin(115200);
 
     SPIFFS.begin(true);
-
+    
    
    button.attachLongPressStart(
     []() {
@@ -290,10 +290,11 @@ void setup()
     digitalWrite(PIN_SD_MISO, LOW);
     digitalWrite(RFID_SCL, LOW);
     digitalWrite(RFID_SDA, LOW);
-    digitalWrite(PIN_RF_CLK, LOW);
     digitalWrite(PIN_RF_MOSI, LOW);
     digitalWrite(PIN_RF_MISO, LOW);
-    digitalWrite(PIN_RF_RST, LOW);
+    digitalWrite(PIN_RF_SCK , LOW);
+    digitalWrite(PIN_RF_SS, LOW);
+    digitalWrite(PIN_RF_GDO , LOW);
     
       esp_deep_sleep_start();
     }
