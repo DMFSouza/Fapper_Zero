@@ -34,11 +34,11 @@
 
 <li><strong><a href="#usb">Usb Mode</a></strong></li>
 
+<li><strong><a href="#ir">IR Mode</a></strong></li>
+
 <li><strong><a href="#rf">RF Mode</a></strong></li>
 
 <li><strong><a href="#rfid">RFID Mode</a></strong></li>
-
-<li><strong><a href="#ir">IR Mode</a></strong></li>
 
 <li><strong><a href="#sd">SD Logs</a></strong></li>
 
@@ -109,6 +109,27 @@ And then? An error page will be opened on the network:
 <li>In USB mode, you can save your Rubber Ducky scripts in text format in the duckyscripts folder on the SD card. When accessing the menu, a dropdown field with all the scripts from the folder will be presented. Select the one you desire, and after connecting the hardware to the target device, click on Start, and watch the magic happen.</li>
 <br>
    <img src="images/usb-menu.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
+# IR Mode<a id="ir"></a>
+
+  <img src="images/IRUI.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
+  For this project, a copper-clad phenolic PCB was created, onto which the future CC1101 radio frequency module was soldered, along with a space for the IR LED as depicted in the image.
+   
+  <img src="images/pcb.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+  <img src="images/ir_1.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+  
+ A hole was drilled in the plastic body of the T-Embed where the LED was positioned, the negative pin was connected to the board's GND, and the VCC was connected to a 100k resistor and then linked to IO17.
+ 
+  <img src="images/ir_2.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+  
+  <img src="images/IRGUI.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
+  
+  Project demonstration in operation:
+
+  <img src="images/ir_demo.gif" alt="IMAGE ALT TEXT" width="50%"></a>
+
    
 # RF Mode<a id="rf"></a>
 
@@ -139,26 +160,6 @@ This module is still under development and is not finalized yet; any assistance 
 
    <img src="images/RFID_MENU1.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
 
-
-# IR Mode<a id="ir"></a>
-
-  <img src="images/IRUI.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
-
-  For this project, a copper-clad phenolic PCB was created, onto which the future CC1101 radio frequency module was soldered, along with a space for the IR LED as depicted in the image.
-   
-  <img src="images/pcb.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
-  <img src="images/ir_1.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
-  
- A hole was drilled in the plastic body of the T-Embed where the LED was positioned, the negative pin was connected to the board's GND, and the VCC was connected to a 100k resistor and then linked to IO17.
- 
-  <img src="images/ir_2.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
-  
-  <img src="images/IRGUI.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
-
-  
-  Project demonstration in operation:
-
-  <img src="images/ir_demo.gif" alt="IMAGE ALT TEXT" width="50%"></a>
 
 # SD Logs<a id="sd"></a>
 
