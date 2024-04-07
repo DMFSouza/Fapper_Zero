@@ -38,7 +38,9 @@ static  lv_obj_t * btn4 =  nullptr;
 static  lv_obj_t * btn5 =  nullptr;
 static  lv_obj_t * btn6 =  nullptr;
 static  lv_obj_t * btn7 =  nullptr;
-
+static  lv_obj_t * btn8 = nullptr;
+static  lv_obj_t * btn9 = nullptr;
+static  lv_obj_t * btn10 = nullptr;
 static String sMessage;
 static char path[22];
 int fileCountOnSD = 0; // for counting files
@@ -53,6 +55,40 @@ struct RFIDData {
     String cATQA;
     String cData;
 };
+
+
+
+byte buffer[18];
+byte block;
+byte waarde[64][16];
+
+    
+MFRC522::MIFARE_Key key;
+
+#define NR_KNOWN_KEYS   8
+
+byte knownKeys[NR_KNOWN_KEYS][MFRC522::MF_KEY_SIZE] =  {
+    {0xff, 0xff, 0xff, 0xff, 0xff, 0xff}, // FF FF FF FF FF FF = factory default
+    {0xa0, 0xa1, 0xa2, 0xa3, 0xa4, 0xa5}, // A0 A1 A2 A3 A4 A5
+    {0xb0, 0xb1, 0xb2, 0xb3, 0xb4, 0xb5}, // B0 B1 B2 B3 B4 B5
+    {0x4d, 0x3a, 0x99, 0xc3, 0x51, 0xdd}, // 4D 3A 99 C3 51 DD
+    {0x1a, 0x98, 0x2c, 0x7e, 0x45, 0x9a}, // 1A 98 2C 7E 45 9A
+    {0xd3, 0xf7, 0xd3, 0xf7, 0xd3, 0xf7}, // D3 F7 D3 F7 D3 F7
+    {0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff}, // AA BB CC DD EE FF
+    {0x00, 0x00, 0x00, 0x00, 0x00, 0x00}  // 00 00 00 00 00 00
+};
+
+void dump_byte_array(byte *buffer, byte bufferSize);  
+
+
+static void clone_card(lv_event_t *e);
+static void change_uid(lv_event_t *e);
+static void write_ui(lv_event_t *e);
+static void wait_screen();
+static void end_screen();
+static void cuid_config(lv_event_t *e);
+byte cardTypeSave;
+lv_obj_t *dd;
 static void delet_sd(lv_event_t *e);
 RFIDData data;
 File root;
@@ -91,13 +127,15 @@ void Rfid_ui(lv_obj_t *parent)
   lv_obj_t *btn = lv_list_add_btn(list1, LV_SYMBOL_WIFI, "Read");
   lv_obj_add_event_cb(btn, read_config, LV_EVENT_CLICKED, NULL);
 
-  lv_obj_t *btn2 = lv_list_add_btn(list1, LV_SYMBOL_COPY, "Write");
+  lv_obj_t *btn2 = lv_list_add_btn(list1, LV_SYMBOL_COPY, "Clone");
   lv_obj_add_event_cb(btn2, write_config, LV_EVENT_CLICKED, NULL);
 
 
   lv_obj_t * btn3 = lv_list_add_btn(list1, LV_SYMBOL_SAVE, "Saved");
   lv_obj_add_event_cb(btn3, load_config, LV_EVENT_CLICKED, NULL);
 
+  lv_obj_t * btn4 = lv_list_add_btn(list1, LV_SYMBOL_WARNING, "CUID");
+  lv_obj_add_event_cb(btn4, cuid_config, LV_EVENT_CLICKED, NULL);
 
 }
 static void create_container(){
@@ -122,19 +160,22 @@ static void read_config(lv_event_t *e)
       btn5 = lv_btn_create(container_obj);
       btn6 = lv_btn_create(container_obj);
       btn7 = lv_btn_create(container_obj);
+    
   }else{
       btn4 = nullptr;
       btn5 = nullptr;
       btn6 = nullptr;
       btn7 = nullptr;
+
       btn4 = lv_btn_create(container_obj);
       
       btn5 = lv_btn_create(container_obj);
       btn6 = lv_btn_create(container_obj);
       btn7 = lv_btn_create(container_obj);
+
   }
   lv_label_set_text_fmt(label0,"%s\n%s\n%s\n%s","UID:","SAK:","ATQA:","Tech:");
- 
+
 
   lv_obj_add_event_cb(btn4, read_function, LV_EVENT_CLICKED, NULL);
   lv_obj_align(btn4,  LV_ALIGN_TOP_MID, 0, 70);
@@ -172,7 +213,8 @@ static void read_config(lv_event_t *e)
   lv_obj_t *label4 = lv_label_create(btn7);
   lv_label_set_text(label4, "save found keys");
   lv_obj_center(label4);
-  
+
+
 }
 
 
@@ -402,7 +444,301 @@ static void save_uid(lv_event_t *e){
 
 static void write_config(lv_event_t *e){
     create_container();
+    if (label0 == nullptr){
+      label0 = lv_label_create(container_obj);
+    }else{
+      label0 =nullptr;
+      label0 = lv_label_create(container_obj);
+    }
+
+
+  
+  btn8 = lv_btn_create(container_obj);
+  lv_obj_add_event_cb(btn8, write_ui, LV_EVENT_CLICKED, NULL);
+    
+  lv_obj_align(btn8,  LV_ALIGN_TOP_MID, 0, 70);
+  lv_obj_t *label = lv_label_create(btn8);
+  lv_label_set_text(label, "Copy");
+  lv_obj_center(label);
+
+
+  btn9 = lv_btn_create(container_obj);
+  lv_obj_add_event_cb(btn9, clone_card, LV_EVENT_CLICKED, NULL);
+  lv_obj_add_flag(btn9, LV_OBJ_FLAG_HIDDEN);  
+  lv_obj_align(btn9,  LV_ALIGN_TOP_MID, 0, 70);
+  lv_obj_t *label1 = lv_label_create(btn9);
+  lv_label_set_text(label1, "Clone");
+  lv_obj_center(label1);
+  
+  lv_obj_align(label0,LV_ALIGN_CENTER, 0, -30);
+  char textBuffer[24]; 
+  sprintf(textBuffer, "Place the original card");
+  lv_label_set_text_fmt(label0,textBuffer);
+
 }
+
+static void write_ui(lv_event_t *e){
+    lv_event_code_t code = lv_event_get_code(e);
+    
+    Wire.begin(RFID_SDA,RFID_SCL);
+    mfrc522.PCD_Init();  
+    
+    for (byte i = 0; i < 6; i++) {
+        key.keyByte[i] = 0xFF;
+    }
+    if ( !mfrc522.PICC_IsNewCardPresent() || !mfrc522.PICC_ReadCardSerial()){
+
+      }
+   // Serial.print(F("Card UID:"));
+    dump_byte_array(mfrc522.uid.uidByte, mfrc522.uid.size);
+    //Serial.println();
+    //Serial.print(F("PICC type: "));
+    cardTypeSave =  mfrc522.PICC_GetType(mfrc522.uid.sak);
+    //Serial.println(mfrc522.PICC_GetTypeName( cardTypeSave));
+
+    
+   lv_label_set_text_fmt(label0,"");
+   lv_obj_clean(label0);
+   wait_screen();
+   lv_obj_add_flag(btn8, LV_OBJ_FLAG_HIDDEN);
+   lv_obj_clear_flag(btn9, LV_OBJ_FLAG_HIDDEN); 
+  
+ 
+  
+} 
+static void wait_screen(){
+   
+   label1 = lv_label_create(container_obj);
+   lv_obj_align(label1,LV_ALIGN_CENTER, 0, -30);
+   char textBuffer[26];
+   sprintf(textBuffer, "Insert destination card");
+   lv_label_set_text(label1,textBuffer);
+   
+}
+
+
+void dump_byte_array(byte *buffer, byte bufferSize) {
+     for (byte i = 0; i < bufferSize; i++) {
+        //Serial.print(buffer[i] < 0x10 ? " 0" : " ");
+        //Serial.print(buffer[i], HEX);
+    }
+}
+
+
+static void clone_card(lv_event_t *e){ 
+
+    lv_obj_add_flag(btn9, LV_OBJ_FLAG_HIDDEN);      
+    lv_label_set_text_fmt(label1,"");
+    lv_obj_clean(label1);
+    //Serial.println("Insert new card...");
+  
+    if ( ! mfrc522.PICC_IsNewCardPresent())
+        return;
+
+    // Select one of the cards
+    if ( ! mfrc522.PICC_ReadCardSerial())
+        return;
+
+
+    //Serial.println("Insert destination card...");
+    
+    for (byte i = 0; i < 6; i++) {
+        key.keyByte[i] = 0xFF;
+    }
+
+  for(int i = 4; i <= 62; i++){
+    if(i == 7 || i == 11 || i == 15 || i == 19 || i == 23 || i == 27 || i == 31 || i == 35 || i == 39 || i == 43 || i == 47 || i == 51 || i == 55 || i == 59){
+      i++;
+    }
+    block = i;
+    
+    //Serial.println(F("Authenticating using key A..."));
+    byte status = (MFRC522::StatusCode) mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, block, &key, &(mfrc522.uid));
+    if (status != MFRC522::STATUS_OK) {
+        //Serial.print(F("PCD_Authenticate() failed: "));
+        //Serial.println(mfrc522.GetStatusCodeName(status));
+        return;
+        
+    }
+    
+    //Serial.println(F("Authenticating again using key B..."));
+    status = (MFRC522::StatusCode) mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, block, &key, &(mfrc522.uid));
+    if (status != MFRC522::STATUS_OK) {
+        //Serial.print(F("PCD_Authenticate() failed: "));
+        //Serial.println(mfrc522.GetStatusCodeName(status));
+        return;
+    }
+    //Serial.print(F("Writing data into block ")); 
+    //Serial.print(block);
+    //Serial.println("\n");
+          
+    dump_byte_array(waarde[block], 16); 
+    
+          
+     status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(block, waarde[block], 16);
+      if (status != MFRC522::STATUS_OK) {
+        //Serial.print(F("MIFARE_Write() failed: "));
+        //Serial.println(mfrc522.GetStatusCodeName(status));
+      }
+
+  }
+  mfrc522.PICC_HaltA();       
+  mfrc522.PCD_StopCrypto1(); 
+
+  mfrc522.PCD_Reset();  
+  Wire.end();
+  end_screen();
+  
+}
+static void end_screen(){
+  lv_label_set_text_fmt(label0,"");
+  lv_obj_clean(label0);
+  label0 = lv_label_create(container_obj);
+  lv_obj_align(label0,LV_ALIGN_CENTER, 0, 0);
+  lv_label_set_recolor(label0, true);
+  char textBuffer1[14]; 
+  sprintf(textBuffer1, "#03fc07 Done#");
+  lv_label_set_text_fmt(label0,textBuffer1 );
+}
+
+
+static void cuid_config(lv_event_t *e){
+  create_container();
+
+  lv_obj_t *mbox1 = lv_msgbox_create(NULL, "Attention!", "Only use this routine with Mifare Magic cards!", NULL, true);
+  lv_obj_center(mbox1);
+ 
+  pinMode(PIN_SD_CS, OUTPUT);
+ 
+  digitalWrite(PIN_SD_CS, 1);
+  SD_MMC.setPins(PIN_SD_SCK, PIN_SD_MOSI, PIN_SD_MISO);
+  
+  if (!SD_MMC.begin("/sdcard", true)) {
+      Serial.println("Failed to mount SD card");
+      return;
+   }
+  uint8_t cardType = SD_MMC.cardType();
+  if (cardType == CARD_NONE) {
+       Serial.println("No SD card attached");
+       return;
+  }
+  
+  if (cardType == CARD_MMC) {
+  } else if (cardType == CARD_SD) { 
+  } else if (cardType == CARD_SDHC) {
+      
+  }
+  
+  
+  root = SD_MMC.open("/rfid");
+
+  printDirectory(root, 0);
+
+  char path[30];
+  char buffer[1024];
+  String cuid ="";
+for(int x = 0; x < fileCountOnSD; x++) {
+  sprintf(path, "/rfid/%s", fileDir[x]);
+  File file = SD_MMC.open(path);
+  if (!file) {
+    Serial.println("Failed to open file for reading");
+    return;
+  }
+  
+  // Ler apenas a primeira linha do arquivo
+  String firstLine = file.readStringUntil('\n');
+  file.close();
+
+  int uidIndex = firstLine.indexOf("\"uid\":");
+
+  if (uidIndex != -1) {
+ 
+    String uidValue = firstLine.substring(uidIndex + 8, uidIndex + 19);
+    cuid+= uidValue+"\n";
+
+  } else {
+    Serial.println("Could not find 'id' and/or 'uid' in the first line of the file.");
+  }
+}
+
+
+    dd = lv_dropdown_create(container_obj);
+    lv_dropdown_set_options(dd,cuid.c_str() );
+
+    lv_obj_align(dd, LV_ALIGN_TOP_MID, 0, 10);
+    lv_obj_add_event_cb(dd, event_handler, LV_EVENT_ALL, NULL);
+    
+    btn10 = lv_btn_create(container_obj);
+    lv_obj_add_event_cb(btn10, change_uid,LV_EVENT_CLICKED, NULL);
+    lv_obj_align(btn10,  LV_ALIGN_TOP_MID, 0, 60);
+
+    lv_obj_t *label = lv_label_create(btn10);
+    lv_label_set_text(label, "Change UID");
+    lv_obj_center(label);
+
+}
+
+static void change_uid(lv_event_t *e){ //Read card
+   
+  Wire.begin(RFID_SDA,RFID_SCL);
+  mfrc522.PCD_Init();  
+  char buffer[32]; 
+  lv_dropdown_get_selected_str(dd, buffer, sizeof(buffer));
+ // Serial.println(String(buffer));
+  
+  if (String(buffer).isEmpty()) {
+    return;
+  } 
+    int index = 0;
+    byte UID[4]; 
+    
+    char *token = strtok(buffer, " ");
+    while (token != NULL && index < 4) {
+        // Converte o token em um valor hexadecimal literal
+        sscanf(token, "%hhx", &UID[index]);
+        index++;
+
+        // Obtenha o próximo token
+        token = strtok(NULL, " ");
+    }
+
+
+ 
+  if ( ! mfrc522.PICC_IsNewCardPresent() || ! mfrc522.PICC_ReadCardSerial() ) {
+    
+  }
+
+
+  for (byte i = 0; i < mfrc522.uid.size; i++) {
+
+  } 
+  byte newUid[sizeof(UID)];
+  memcpy(newUid, UID, sizeof(UID));
+  
+  if ( mfrc522.MIFARE_SetUid(newUid, (byte)4, true) ) {
+    // Serial.println(F("Wrote new UID to card."));
+  }
+
+  mfrc522.PICC_HaltA();
+  if ( ! mfrc522.PICC_IsNewCardPresent() || ! mfrc522.PICC_ReadCardSerial() ) {
+    
+  }
+  //Serial.println(F("New UID and contents:"));
+  mfrc522.PICC_DumpToSerial(&(mfrc522.uid));
+  delay(2000); 
+  lv_obj_add_flag(btn10, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(dd, LV_OBJ_FLAG_HIDDEN);
+  label0 = lv_label_create(container_obj);
+  lv_obj_align(label0,LV_ALIGN_CENTER, 0, 0);
+  lv_label_set_recolor(label0, true);
+  char textBuffer[14]; 
+  sprintf(textBuffer, "#03fc07 Done#");
+  lv_label_set_text_fmt(label0,textBuffer );
+  mfrc522.PCD_Reset();  
+  Wire.end();
+}
+
+
 
 static void save_function(lv_event_t *e){
     create_container();
