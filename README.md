@@ -147,29 +147,29 @@ The RF mode is still under development, currently having only the graphical inte
 
 For the RFID module, I'm using an RFID module from M5 Stack, which is a modified MFRC522 designed to work with I2C. I removed it from its original case and attached it to the back of the T-Embed as shown in the image.
 <br>
-   <img src="images/MODULO1.jpeg" alt="IMAGE ALT TEXT" width="25%"></a> <img src="images/MODULO2.jpeg" alt="IMAGE ALT TEXT" width="30%"></a>
+   <img src="images/MODULO1.jpeg" alt="IMAGE ALT TEXT1" width="25%"></a> <img src="images/MODULO2.jpeg" alt="IMAGE ALT TEXT" width="30%"></a>
 
   
 
-   <img src="images/MODULO3.jpeg" alt="IMAGE ALT TEXT" width="30%"></a>
+   <img src="images/MODULO3.jpeg" alt="IMAGE ALT TEXT2" width="30%"></a>
 <br>
 Read mode, in this mode it is possible to read an RFID card and save its basic data or try to authenticate it with default keys and then save these keys on the SD card.
 <br>
-   <img src="images/RFIDMENU1.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+   <img src="images/RFIDMENU1.jpg" alt="IMAGE ALT TEXT3" width="50%"></a>
 
-   <img src="images/RFIDMENU1_1.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+   <img src="images/RFIDMENU1_1.jpg" alt="IMAGE ALT TEXT4" width="50%"></a>
 <br>
 Clone Module: In this module, it's possible to clone an RFID card.
 <br>
-  <img src="images/RFIDMENU2.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+  <img src="images/RFIDMENU2.jpg" alt="IMAGE ALT TEXT5" width="50%"></a>
 <br>
 Saved Module: In this module, you can view the saved cards and delete them. Please note that only the first eight cards will be listed.
 <br>
-<img src="images/RFIDMENU3.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+<img src="images/RFIDMENU3.jpg" alt="IMAGE ALT TEXT6" width="50%"></a>
 <br>
 CUID Mode: In this mode, you can select one of the UIDs saved on the SD card and rewrite it onto a Magic technology card. Please note that this option should only be used with Magic cards; attempting to use it with a normal card may result in the card being blocked.
 <br>
-  <img src="images/RFIDMENU4.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+  <img src="images/RFIDMENU4.jpg" alt="IMAGE ALT TEXT7" width="50%"></a>
 <br>
 
 # SD Logs<a id="sd"></a>
