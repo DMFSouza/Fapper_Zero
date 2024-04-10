@@ -4,7 +4,7 @@
 #include "app_typedef.h"
 #include "lvgl.h"
 #include "ui.h"
-
+#include <Arduino.h>
 extern app_t rf_ui;
 
 #endif // SD_WINDOW_H

@@ -7,12 +7,13 @@
 #include <vector>
 
 static lv_obj_t *container;
+
 void return_function(lv_event_t *e)
 {
   if (container == nullptr)
         return;
  void *group_void = lv_obj_get_group(container);
-
+ 
   lv_event_code_t code = lv_event_get_code(e);
   lv_obj_t *ta = lv_event_get_target(e);
   lv_obj_t *kb = (lv_obj_t *)lv_event_get_user_data(e);

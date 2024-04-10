@@ -5,8 +5,9 @@
 #include <vector>
 #include <FS.h>
 #include <SPIFFS.h>
-#include <SPI.h>
 #include <SD_MMC.h>
+
+
 
 static lv_obj_t * chart;
 static const lv_coord_t ecg_sample[] = {
@@ -20,6 +21,7 @@ static lv_obj_t *container_obj= nullptr;
 static lv_obj_t *parent_obj= nullptr;
 
 static void rx_config(lv_event_t *e);
+static void rx_transmitter(lv_event_t *e);
 void lv_Receiver();
 static void event_receiver(lv_event_t * e);
 
@@ -74,12 +76,8 @@ void lv_Rf_tabview(lv_obj_t *parent)
 
 static void rx_config(lv_event_t *e)
 {
-
-
-   lv_Receiver();
-   
+  lv_Receiver();
 }
-
 static void event_receiver(lv_event_t * e)
 {
     lv_event_code_t code = lv_event_get_code(e);
@@ -136,6 +134,7 @@ void lv_Receiver()
     lv_obj_set_size(btn, 35, 25);
     lv_obj_set_style_bg_color(btn, lv_palette_main(LV_PALETTE_GREY), 0);
     lv_obj_set_style_outline_color(btn, lv_color_white(), LV_STATE_FOCUS_KEY);
+    lv_obj_add_event_cb(btn, rx_transmitter, LV_EVENT_CLICKED, NULL);
 
     lv_obj_t *label = lv_label_create(btn);
     lv_obj_center(label);
@@ -146,7 +145,7 @@ void lv_Receiver()
     lv_obj_set_size(btn2, 35, 25);
     lv_obj_set_style_bg_color(btn2, lv_palette_main(LV_PALETTE_GREY), 0);
     lv_obj_set_style_outline_color(btn2, lv_color_white(), LV_STATE_FOCUS_KEY);
-
+   
     lv_obj_t *label2 = lv_label_create(btn2);
     lv_obj_center(label2);
     lv_label_set_text(label2,LV_SYMBOL_STOP);
@@ -166,6 +165,12 @@ void lv_Receiver()
     uint32_t pcnt = sizeof(ecg_sample) / sizeof(ecg_sample[0]);
     lv_chart_set_point_count(chart, pcnt);
     lv_chart_set_ext_y_array(chart, ser, (lv_coord_t *)ecg_sample);
+
+}
+
+
+void rx_transmitter(lv_event_t *e) {
+   
 
 }
 
@@ -324,6 +329,7 @@ void lv_jamming()
 
 void runRfWindow(lv_obj_t *parent)
 {
+  
   lv_Rf_tabview(parent);
 
 }

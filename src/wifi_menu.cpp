@@ -39,7 +39,7 @@ String webString="";
 String serialString="";
 bool lCatch = false;
 
-void captive_setup();
+static void beacom_setup(lv_event_t *e);
 void handleRoot();
 void captive_function(const String& htmlContent);
 
@@ -90,7 +90,17 @@ static lv_obj_t *create_obj_with_label(lv_obj_t *container_obj, textarea_config_
 static lv_obj_t *create_btn_on_label(lv_obj_t *container_obj,const char *text);
 static void get_wifi_ssid_event_cb(lv_event_t *e);
 static void connect_wifi_event_cb(lv_event_t *e);
-static void ta_event_cb(lv_event_t *e);;
+static void ta_event_cb(lv_event_t *e);
+
+/*====================================================
+ * VARIAVEIS BEACOM
+ ====================================================*/
+void beacom_setup();
+static void stop_beacom(lv_event_t *e);
+static void start_beacom(lv_event_t *e);
+lv_obj_t *btn_start;
+lv_obj_t *btn_stop;
+
 /*====================================================
  * VARIAVEIS DEAUTH
  ====================================================*/
@@ -98,6 +108,7 @@ static void deauth_handler(lv_event_t * e);
 static void deauth_change_focus(lv_event_t * e);
 void lv_deauth_select(void);
 static void deauther_config(lv_event_t *e);
+static void init_beacom(lv_event_t *e);
 static void draw_event_cb(lv_event_t * e);
 static lv_group_t* group_container_obj = nullptr;
 
@@ -144,25 +155,19 @@ void lv_wifi_tabview(lv_obj_t *parent)
     lv_obj_t *btn = lv_list_add_btn(list1, LV_SYMBOL_WIFI, "Sniffer");
     lv_obj_add_event_cb(btn, wifi_config, LV_EVENT_CLICKED, NULL);
     
-    lv_obj_t *btn2 = lv_list_add_btn(list1, LV_SYMBOL_WARNING, "Deauther");
-    lv_obj_add_event_cb(btn2, deauther_config, LV_EVENT_CLICKED, NULL);
+    lv_obj_t *btn2 = lv_list_add_btn(list1, LV_SYMBOL_LIST, "Beacom");
+    lv_obj_add_event_cb(btn2, init_beacom, LV_EVENT_CLICKED, NULL);
     
 
     lv_obj_t * btn3= lv_list_add_btn(list1, LV_SYMBOL_EYE_OPEN, "Captive portal");
     lv_obj_add_event_cb(btn3, captive_config, LV_EVENT_CLICKED, NULL);
    
 
-    lv_obj_t *btn4 = lv_list_add_btn(list1, LV_SYMBOL_SHUFFLE, "Evil Twin");
-    lv_obj_add_event_cb(btn4, event_handler, LV_EVENT_CLICKED, NULL);
+   // lv_obj_t *btn4 = lv_list_add_btn(list1, LV_SYMBOL_SHUFFLE, "Evil Twin");
+   // lv_obj_add_event_cb(btn4, event_handler, LV_EVENT_CLICKED, NULL);
   
 }
 
-
-void runWifiWindow(lv_obj_t *parent)
-{
-  lv_wifi_tabview(parent);
-
-}
 
 /*=====================================
  * FUNCOES DEAUTHER
@@ -445,7 +450,55 @@ static void ta_event_cb(lv_event_t *e) {
     lv_group_focus_obj(ta);
   }
 }
+/*=====================================
+ * FUNCOES BEACOM
+ ======================================*/
+static void init_beacom(lv_event_t *e){
+  container_obj=lv_obj_create(parent_obj);
+  lv_obj_set_size(container_obj,195,140);
+  lv_obj_align(container_obj,  LV_ALIGN_TOP_MID, 60, 15);
 
+  static lv_style_t style_btn;
+  lv_style_init(&style_btn);
+  lv_style_set_bg_color(&style_btn, lv_palette_darken(LV_PALETTE_GREEN, 3));
+
+  static lv_style_t style_btn1;
+  lv_style_init(&style_btn1);
+  lv_style_set_bg_color(&style_btn1, lv_palette_darken(LV_PALETTE_RED, 3));
+
+    
+  btn_start = lv_btn_create(container_obj);
+  lv_obj_add_style(btn_start ,&style_btn,0);
+  
+  lv_obj_set_size(btn_start,70,30);
+  lv_obj_add_event_cb(btn_start,  start_beacom, LV_EVENT_CLICKED, NULL);
+  lv_obj_align(btn_start,  LV_ALIGN_CENTER, 0, 0);
+  lv_obj_t *label_start = lv_label_create(btn_start);
+  lv_label_set_text(label_start, "Start");
+  lv_obj_center(label_start);
+
+  btn_stop = lv_btn_create(container_obj);
+  lv_obj_add_style(btn_stop ,&style_btn1,0);
+  
+  lv_obj_set_size(btn_stop,70,30);
+  lv_obj_add_flag(btn_stop, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_event_cb(btn_stop, stop_beacom, LV_EVENT_CLICKED, NULL);
+  lv_obj_align(btn_stop,  LV_ALIGN_CENTER, 0, 0);
+  lv_obj_t *label_stop = lv_label_create(btn_stop);
+  lv_label_set_text(label_stop, "Stop");
+  lv_obj_center(label_stop);
+}
+
+static void start_beacom(lv_event_t *e){
+  lv_obj_add_flag(btn_start, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_clear_flag(btn_stop, LV_OBJ_FLAG_HIDDEN);
+  beacom_start() ;
+}
+static void stop_beacom(lv_event_t *e){
+   lv_obj_add_flag(btn_stop, LV_OBJ_FLAG_HIDDEN);
+   lv_obj_clear_flag(btn_start, LV_OBJ_FLAG_HIDDEN);
+   beacom_stop() ;
+}
 
 /*=====================================
  * FUNCOES CAPTIVE PORTAL
@@ -652,7 +705,11 @@ void captive_function(const String& htmlContent) {
 
 }
 
+void runWifiWindow(lv_obj_t *parent)
+{
+  lv_wifi_tabview(parent);
 
+}
 app_t wifi_ui = {
     .setup_func_cb = runWifiWindow,
     .exit_func_cb = nullptr,

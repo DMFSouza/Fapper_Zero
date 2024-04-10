@@ -19,6 +19,4 @@ extern IPAddress netMsk;
 extern DNSServer dnsServer;
 extern WebServer server;
 
-
-
 #endif // SD_WINDOW_H

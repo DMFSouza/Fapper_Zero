@@ -88,7 +88,7 @@ static void wait_screen();
 static void end_screen();
 static void cuid_config(lv_event_t *e);
 byte cardTypeSave;
-lv_obj_t *dd;
+lv_obj_t *cc;
 static void delet_sd(lv_event_t *e);
 RFIDData data;
 File root;
@@ -97,8 +97,10 @@ File root;
 void printDirectory(File dir, int numTabs);
 static void delet_sd(lv_event_t *e,int index);
 static void create_obj();
+static void event_handler_cc(lv_event_t *e);
 
-static void event_handler(lv_event_t *e)
+
+static void event_handler_cc(lv_event_t *e)
 {
         if (e == nullptr) {
             return;
@@ -184,7 +186,7 @@ static void read_config(lv_event_t *e)
   lv_obj_center(label);
 
 
- 
+  
   lv_obj_set_size(btn5,70,30);
   lv_obj_add_flag(btn5, LV_OBJ_FLAG_HIDDEN);
   lv_obj_add_event_cb(btn5, save_uid, LV_EVENT_CLICKED, NULL);
@@ -662,11 +664,11 @@ for(int x = 0; x < fileCountOnSD; x++) {
 }
 
 
-    dd = lv_dropdown_create(container_obj);
-    lv_dropdown_set_options(dd,cuid.c_str() );
+    cc = lv_dropdown_create(container_obj);
+    lv_dropdown_set_options(cc,cuid.c_str() );
 
-    lv_obj_align(dd, LV_ALIGN_TOP_MID, 0, 10);
-    lv_obj_add_event_cb(dd, event_handler, LV_EVENT_ALL, NULL);
+    lv_obj_align(cc, LV_ALIGN_TOP_MID, 0, 10);
+    lv_obj_add_event_cb(cc, event_handler_cc, LV_EVENT_ALL, NULL);
     
     btn10 = lv_btn_create(container_obj);
     lv_obj_add_event_cb(btn10, change_uid,LV_EVENT_CLICKED, NULL);
@@ -683,7 +685,7 @@ static void change_uid(lv_event_t *e){ //Read card
   Wire.begin(RFID_SDA,RFID_SCL);
   mfrc522.PCD_Init();  
   char buffer[32]; 
-  lv_dropdown_get_selected_str(dd, buffer, sizeof(buffer));
+  lv_dropdown_get_selected_str(cc, buffer, sizeof(buffer));
  // Serial.println(String(buffer));
   
   if (String(buffer).isEmpty()) {
@@ -727,7 +729,7 @@ static void change_uid(lv_event_t *e){ //Read card
   mfrc522.PICC_DumpToSerial(&(mfrc522.uid));
   delay(2000); 
   lv_obj_add_flag(btn10, LV_OBJ_FLAG_HIDDEN);
-  lv_obj_add_flag(dd, LV_OBJ_FLAG_HIDDEN);
+  lv_obj_add_flag(cc, LV_OBJ_FLAG_HIDDEN);
   label0 = lv_label_create(container_obj);
   lv_obj_align(label0,LV_ALIGN_CENTER, 0, 0);
   lv_label_set_recolor(label0, true);

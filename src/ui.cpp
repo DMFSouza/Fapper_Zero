@@ -7,6 +7,7 @@ LV_FONT_DECLARE(alibaba_font);
 LV_IMG_DECLARE(wifi_icon);
 LV_IMG_DECLARE(usb);
 LV_IMG_DECLARE(sd);
+LV_IMG_DECLARE(ble);
 LV_IMG_DECLARE(rfid_icon);
 LV_IMG_DECLARE(rf);
 LV_IMG_DECLARE(config_icon);
@@ -133,8 +134,9 @@ void ui_init(void) {
   /* Add application */
   create_app(panel,  "Wifi", &wifi_icon,&wifi_ui);
   create_app(panel,  "USB",  &usb,&runDuckyCodeApp);
+  create_app(panel, "BLE", &ble,&ble_ui);
   create_app(panel, "RFID", &rfid_icon,&rfid_ui);
-  create_app(panel, "RF",   &rf,&rf_ui);
+ // create_app(panel, "RF",   &rf,&rf_ui);
   create_app(panel,  "IR",   &ir,&ir_ui);
   create_app(panel,  "SD",   &sd,&sd_window);
   create_app(panel,  "Config",   &config_icon,&config_ui);
