@@ -34,6 +34,8 @@
 
 <li><strong><a href="#usb">Usb Mode</a></strong></li>
 
+<li><strong><a href="#ble">Bluetooth Mode</a></strong></li>
+
 <li><strong><a href="#ir">IR Mode</a></strong></li>
 
 <li><strong><a href="#rf">RF Mode</a></strong></li>
@@ -100,8 +102,23 @@ And then? An error page will be opened on the network:
 <br>
 <li><strong>Evil Twin Mode - Under construction</strong></li>
 
-# Usb Mode<a id="usb"></a>
+<li><strong>Beacom:</strong> This module creates several fake Wi-Fi access points with funny names.</li>
+ <br>
+   <img src="images/WIFI_BEACOM.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+<br>
 
+# Bluetooth Mode<a id="ble"></a>
+
+<img src="images/BLE_MENU.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
+
+The exploit was initially developed and discovered by ECTO-1A. I adapted it for use with ESP32 and RPi (and any devices capable of running Python). The scripts are primarily designed for ESP32, as ESP8266 lacks BLE capability. 
+
+
+<img src="images/IBEACOM.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+<br>
+
+# Usb Mode<a id="usb"></a>
 
 <img src="images/usb.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
 
@@ -109,6 +126,7 @@ And then? An error page will be opened on the network:
 <li>In USB mode, you can save your Rubber Ducky scripts in text format in the duckyscripts folder on the SD card. When accessing the menu, a dropdown field with all the scripts from the folder will be presented. Select the one you desire, and after connecting the hardware to the target device, click on Start, and watch the magic happen.</li>
 <br>
    <img src="images/usb-menu.jpg" alt="IMAGE ALT TEXT" width="50%"></a>
+
 
 # IR Mode<a id="ir"></a>
 
