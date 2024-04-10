@@ -1,0 +1,243 @@
+Nenhum evento: 0
+A: 4
+B: 5
+C: 6
+D: 7
+E: 8
+F: 9
+G: 10
+H: 11
+I: 12
+J: 13
+K: 14
+L: 15
+M: 16
+N: 17
+O: 18
+P: 19
+Q: 20
+R: 21
+S: 22
+T: 23
+U: 24
+V: 25
+W: 26
+X: 27
+Y: 28
+Z: 29
+1: 30
+2: 31
+3: 32
+4: 33
+5: 34
+6: 35
+7: 36
+8: 37
+9: 38
+0: 39
+Enter (Return): 40
+ESC: 41
+Backspace (Delete): 42
+Tab: 43
+Espaço (Spacebar): 44
+-: 45
+=: 46
+[: 47
+]: 48
+Non-US # and ~ (Depending on the keyboard layout): 50
+;: 51
+': 52
+` (Grave accent): 53
+,: 54
+.: 55
+/: 56
+Caps Lock: 57
+F1: 58
+F2: 59
+F3: 60
+F4: 61
+F5: 62
+F6: 63
+F7: 64
+F8: 65
+F9: 66
+F10: 67
+F11: 68
+F12: 69
+Print Screen: 70
+Scroll Lock: 71
+Pause: 72
+Insert: 73
+Home: 74
+Page Up: 75
+Delete Forward (Del): 76
+End: 77
+Page Down: 78
+Right Arrow: 79
+Left Arrow: 80
+Down Arrow: 81
+Up Arrow: 82
+Num Lock: 83
+/ (Keypad Divide): 84
+(Keypad Multiply): 85
+(Keypad Subtract): 86
+(Keypad Add): 87
+Enter (Keypad Enter): 88
+1 (Keypad 1): 89
+2 (Keypad 2): 90
+3 (Keypad 3): 91
+4 (Keypad 4): 92
+5 (Keypad 5): 93
+6 (Keypad 6): 94
+7 (Keypad 7): 95
+8 (Keypad 8): 96
+9 (Keypad 9): 97
+0 (Keypad 0): 98
+. (Keypad Decimal): 99
+Non-US \ and | (Depending on the keyboard layout): 100
+Application: 101
+Power: 102
+= (Keypad Equal): 103
+F13: 104
+F14: 105
+F15: 106
+F16: 107
+F17: 108
+F18: 109
+F19: 110
+F20: 111
+F21: 112
+F22: 113
+F23: 114
+F24: 115
+Execute: 116
+Help: 117
+Menu: 118
+Select: 119
+Stop: 120
+Again: 121
+Undo: 122
+Cut: 123
+Copy: 124
+Paste: 125
+Find: 126
+Mute: 127
+Volume Up: 128
+Volume Down: 129
+Locking Caps Lock (Toggle): 130
+Locking Num Lock (Toggle): 131
+Locking Scroll Lock (Toggle): 132
+Keypad Comma: 133
+Keypad Equal Sign (AS/400): 134
+International 1: 135
+International 2: 136
+International 3: 137
+International 4: 138
+International 5: 139
+International 6: 140
+International 7: 141
+International 8: 142
+International 9: 143
+Lang 1: 144
+Lang 2: 145
+Lang 3: 146
+Lang 4: 147
+Lang 5: 148
+Lang 6: 149
+Lang 7: 150
+Lang 8: 151
+Lang 9: 152
+Alterase: 153
+Erase: 154
+SysReq/Attention: 155
+Cancel: 156
+Clear: 157
+Prior: 158
+Return: 159
+Separator: 160
+Out: 161
+Oper: 162
+Clear/Again: 163
+CrSel/Props: 164
+ExSel: 165
+00 (Keypad 00): 176
+000 (Keypad 000): 177
+Thousands Separator (AS/400): 178
+Decimal Separator (AS/400): 179
+Currency Unit (AS/400): 180
+Currency Sub-unit (AS/400): 181
+Keypad (,): 182
+Keypad (Equal Sign): 183
+International Currency (AS/400): 184
+International Currency Sub-unit (AS/400): 185
+International Numeric (AS/400): 186
+International: 187
+Cut (AS/400): 188
+Copy (AS/400): 189
+Paste (AS/400): 190
+Find (AS/400): 191
+Mute (AS/400): 192
+Volume Up (AS/400): 193
+Volume Down (AS/400): 194
+Alt Erase: 195
+SysReq/Attention (AS/400): 196
+Cancel (AS/400): 197
+Clear (AS/400): 198
+Prior (AS/400): 199
+Return (AS/400): 200
+Separator (AS/400): 201
+Out (AS/400): 202
+Oper (AS/400): 203
+Clear/Again (AS/400): 204
+CrSel/Props (AS/400): 205
+ExSel (AS/400): 206
+Erase EOF: 207
+Play: 208
+Pause: 209
+Record: 210
+Fast Forward: 211
+Rewind: 212
+Next Track: 213
+Previous Track: 214
+Stop Media: 215
+Eject: 216
+Random Play: 217
+Repeat: 218
+Channel Up: 219
+Channel Down: 220
+Play/Pause: 221
+Mute: 222
+Volume Up: 223
+Volume Down: 224
+Thumbs Up: 225
+Thumbs Down: 226
+Skip Forward: 227
+Skip Backward: 228
+Fast Forward: 229
+Rewind: 230
+Stop: 231
+Eject: 232
+Shuffle: 233
+Repeat: 234
+Channel Up: 235
+Channel Down: 236
+Record: 237
+Pause: 238
+Play: 239
+Next Track: 240
+Previous Track: 241
+Stop: 242
+Record: 243
+Pause: 244
+Play: 245
+Next Track: 246
+Previous Track: 247
+Stop: 248
+Eject: 249
+Random Play: 250
+Repeat: 251
+Channel Up: 252
+Channel Down: 253
+Slow Reverse: 254
+Slow Forward: 255
+Por favor, note que esta l
